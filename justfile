@@ -2,6 +2,7 @@ set shell := ["bash", "-uec"]
 
 shell_files := `find . \( -name .git -o -name node_modules -o -name .venv -o -name .ruff_cache \) -prune -o -name "*.sh" -print | tr '\n' ' ' `
 py_files := `find . \( -name .git -o -name node_modules -o -name .venv -o -name .ruff_cache \) -prune -o -name "*.py" -print | tr '\n' ' ' `
+bucket := 'streambox-helpfulferret'
 
 [group('maint')]
 default:
@@ -47,7 +48,7 @@ lint:
 [group('setup')]
 bucket-setup:
     terraform init
-    terraform plan -out=tfplan
+    terraform plan -out=tfplan -var="{{ bucket }}"
     terraform apply tfplan
 
 [group('bucket')]
